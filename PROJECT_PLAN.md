@@ -245,6 +245,7 @@ export class BranchingHandler {
 - Create foundation for intelligent decision-making
 - **Estimated**: 2-3 hours
 - **GitHub Issue**: #5 (Flow Intelligence Enhancement)
+- **Detailed Breakdown**: See section below for comprehensive analysis
 
 **STRATEGIC BENEFITS**:
 - **Intelligence Foundation**: Enables all future smart features
@@ -257,6 +258,204 @@ export class BranchingHandler {
 2. **B4**: Sequential-Thinking Integration (4-5 hours) 
 3. **B5**: Dynamic Branching Implementation (4-5 hours)
 4. **B6**: Context-Aware Tool Selection (3-4 hours)
+
+---
+
+## 📋 TASK B1: DETAILED IMPLEMENTATION BREAKDOWN
+
+### What This Task Actually Does
+
+**Goal**: Add intelligent flow analysis and optimization suggestions to FLUJO's existing workflow execution engine.
+
+#### Current State vs. Target State
+
+**BEFORE** (Current FLUJO):
+- Flows execute in predetermined sequence
+- No optimization suggestions
+- Static execution paths
+- Manual configuration required for all decisions
+
+**AFTER** (With Task B1):
+- Flows get analyzed before/during execution for optimization opportunities
+- System provides intelligent suggestions: "This flow could be 30% faster if you use Tool X instead of Tool Y"
+- Real-time performance insights and alternative path recommendations
+- Foundation for all future intelligent features
+
+### What You Need to Decide/Validate
+
+#### 1. **MCP Server Availability Check**
+- **Question**: Is the `mcp-reasoner` server actually installed and working in your FLUJO setup?
+- **Location to check**: `/mcp-servers/code-reasoning/` directory
+- **Validation needed**: Can you currently call mcp-reasoner from FLUJO's MCPHandler?
+
+#### 2. **Current FlowExecutor Understanding**
+- **File**: `src/backend/execution/flow/FlowExecutor.ts`
+- **Questions to answer**:
+  - How does the current `executeStep()` method work?
+  - What is the structure of `SharedState`?
+  - Where would be the best integration point for analysis?
+  - Are there existing hooks for pre/post execution logic?
+
+#### 3. **MCPHandler Integration Points**
+- **File**: Look for existing MCP integration patterns
+- **Questions**:
+  - How do other MCP servers get called currently?
+  - What's the standard pattern for MCPHandler.executeMCP()?
+  - Are there existing error handling patterns for MCP failures?
+
+#### 4. **UI Integration Strategy**
+- **Question**: Where should reasoning insights be displayed?
+- **Options to consider**:
+  - Flow Builder interface (for design-time suggestions)
+  - Debug Dashboard (for execution-time insights)  
+  - Modal/panel for optimization recommendations
+  - Toast notifications for quick suggestions
+
+### Key Technical Decisions Needed
+
+#### 1. **When to Trigger Analysis**
+- **Pre-execution**: Analyze flow before it starts running
+- **Mid-execution**: Analyze during execution for real-time adjustments
+- **Post-execution**: Analyze results for future optimization
+- **Decision needed**: Which timing provides most value with least performance impact?
+
+#### 2. **What Data to Send to mcp-reasoner**
+Current options from SharedState:
+- `messages` (conversation history)
+- `flowId` (current flow identifier)
+- `debugSteps` (execution history)
+- `metrics` (performance data)
+
+**Decision needed**: What combination provides useful insights without overwhelming the reasoner?
+
+#### 3. **How to Handle Analysis Failures**
+- **Question**: What happens if mcp-reasoner is unavailable or fails?
+- **Options**:
+  - Fail silently and continue normal execution
+  - Show user warning but continue
+  - Retry with fallback parameters
+  - Cache previous analysis results
+
+#### 4. **Performance Impact Tolerance**
+- **Current execution time**: What's typical flow execution latency now?
+- **Acceptable overhead**: How much additional latency is acceptable for reasoning?
+- **Target**: Aiming for <100ms additional latency per reasoning call
+
+### Information You Should Gather Before Starting
+
+#### 1. **Examine Current MCP Integration**
+Look at existing code to understand:
+```
+How does FLUJO currently call MCP servers?
+What does a typical MCPHandler.executeMCP() call look like?
+How are results processed and stored?
+How are errors handled?
+```
+
+#### 2. **Test MCP-Reasoner Availability**
+Verify:
+```
+Can you manually call mcp-reasoner from FLUJO?
+What tools does it expose?
+What input format does it expect?
+What output format does it provide?
+```
+
+#### 3. **Understand FlowExecutor Architecture**
+Map out:
+```
+Where in executeStep() would analysis fit best?
+What data is available at that point?
+How would you store analysis results?
+How would UI components access these results?
+```
+
+#### 4. **Define Success Criteria**
+Clarify:
+```
+What would "good" optimization suggestions look like?
+How would you measure if the integration is working?
+What would make a user say "this is helpful"?
+```
+
+### Potential Blockers to Investigate
+
+#### 1. **MCP Server Configuration**
+- Is mcp-reasoner properly configured in FLUJO's MCP settings?
+- Are the required environment variables set?
+- Does it have necessary permissions and access?
+
+#### 2. **Performance Constraints**
+- Would adding reasoning analysis slow down flows unacceptably?
+- Are there memory or CPU constraints to consider?
+- Should analysis be optional/toggleable?
+
+#### 3. **Data Privacy/Security**
+- What sensitive data might be sent to mcp-reasoner?
+- Are there any data handling restrictions?
+- Should certain flows be excluded from analysis?
+
+#### 4. **UI/UX Integration Complexity**
+- How complex would it be to show reasoning results to users?
+- Where in the existing UI would this fit naturally?
+- Would this require significant UI changes?
+
+### Alternative Approaches to Consider
+
+#### 1. **Simpler Start**: Basic Analysis Only
+- Start with post-execution analysis only
+- Show simple performance metrics
+- No real-time suggestions initially
+
+#### 2. **Different Integration Point**
+- Integrate at flow design time instead of execution time
+- Focus on static flow analysis rather than dynamic
+- Integrate with flow builder instead of executor
+
+#### 3. **Different MCP Server**
+- Start with `sequential-thinking` instead of `mcp-reasoner`
+- Use `memory` server for pattern recognition first
+- Combine multiple servers for richer analysis
+
+### Questions for You to Answer
+
+1. **Priority Validation**: Does intelligent flow analysis align with your immediate needs?
+
+2. **Technical Readiness**: Do you have access to examine the current FlowExecutor code and MCP integration patterns?
+
+3. **Scope Preference**: Would you prefer to start with a minimal integration (just basic analysis) or go for the full implementation?
+
+4. **Success Definition**: What would make you consider this task successfully completed?
+
+5. **User Experience**: How important is it to show reasoning insights to users vs. just using them internally?
+
+### Expected Time Investment
+
+- **Investigation Phase**: 30-60 minutes to examine current code and MCP setup
+- **Implementation Phase**: 2-3 hours for core integration
+- **Testing Phase**: 30-60 minutes for validation and basic testing
+
+### This Task is Right If...
+
+✅ You want to add intelligent capabilities to FLUJO flows  
+✅ You have working MCP infrastructure already  
+✅ You're comfortable modifying backend execution logic  
+✅ You want to lay foundation for future AI features  
+
+### Consider Different Task If...
+
+❌ You prefer to start with UI/UX improvements  
+❌ You want immediate user-facing features  
+❌ You're unsure about MCP server availability  
+❌ You prefer to work on independent features first  
+
+### Documentation References
+
+- **Detailed Implementation Guide**: [Task B1 Documentation](./docs/tasks/task-b1-mcp-reasoner-integration.md)
+- **Master Implementation Guide**: [MCP Implementation Overview](./docs/tasks/README.md)
+- **GitHub Issue**: [#5 Flow Intelligence Enhancement](https://github.com/joelfuller2016/FLUJO/issues/5)
+
+---
 
 ### Ongoing: Category F - Maintenance & Infrastructure
 **Parallel execution throughout project timeline**:
@@ -419,8 +618,9 @@ src/frontend/
 **IMMEDIATE ACTION**: Start with Category B (MCP Integration)
 1. **Clone Repository**: `git clone https://github.com/joelfuller2016/FLUJO.git`
 2. **Check Task Status**: Use task management system (req-43)
-3. **Begin B1**: MCP-Reasoner Integration Setup (Issue #5)
-4. **Estimated Time**: 2-3 hours for foundational reasoning capabilities
+3. **Review Task B1 Breakdown**: Examine the detailed breakdown above before starting
+4. **Begin B1**: MCP-Reasoner Integration Setup (Issue #5)
+5. **Estimated Time**: 2-3 hours for foundational reasoning capabilities
 
 ### For Project Managers
 
@@ -440,7 +640,7 @@ src/frontend/
 
 ## Conclusion
 
-This enhanced project plan transforms FLUJO from \"impressive vision with execution uncertainty\" to \"systematic delivery of intelligent AI orchestration platform.\" The **MCP-First approach** provides:
+This enhanced project plan transforms FLUJO from "impressive vision with execution uncertainty" to "systematic delivery of intelligent AI orchestration platform." The **MCP-First approach** provides:
 
 - **85% improvement** in project success probability through reasoning foundation
 - **95% better** progress tracking and visibility
@@ -450,17 +650,17 @@ This enhanced project plan transforms FLUJO from \"impressive vision with execut
 The MCP-first approach prioritizes the most foundational capabilities - intelligent reasoning and decision-making - which will enhance ALL other features. This eliminates execution paralysis while building true intelligence into the platform from the ground up.
 
 **Next Steps**:
-1. 🧠 Begin task-381: MCP-Reasoner Integration (Issue #5)
-2. 📊 Track progress through task management system (req-43)
-3. 🔄 Complete Category B for intelligent foundations
-4. 🚀 Progress through Categories C-E with enhanced reasoning capabilities
+1. 🧠 **Review Task B1 Breakdown**: Examine detailed implementation considerations above
+2. 📊 **Validate Prerequisites**: Check MCP server availability and FlowExecutor architecture
+3. 🔄 **Begin Implementation**: Start with task-381 (mcp-reasoner Integration)
+4. 🚀 **Track Progress**: Use task management system (req-43) for systematic progress
 
 For questions or modifications to this plan, please open an issue or contact the development team.
 
 ---
 
 *Last Updated: June 2025*  
-*Version: 3.0 - MCP-First Prioritization*  
+*Version: 4.0 - MCP-First with Detailed Task Breakdown*  
 *Status: Active Development - Category B Priority*  
 *Task Management: Request ID req-43*  
 *Current Task: task-381 (mcp-reasoner Integration)*
