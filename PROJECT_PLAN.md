@@ -6,39 +6,35 @@ This document outlines a comprehensive enhancement plan for FLUJO, focusing on a
 
 **Strategic Vision**: Transform FLUJO into an intelligent AI orchestration platform through enhanced MCP optimization, memory systems, reasoning capabilities, and self-optimization features.
 
-**Implementation Methodology**: Systematic 46-task breakdown approach that improves project success probability from 40% to 85% by providing granular progress tracking, clear dependencies, and immediate implementation opportunities.
+**Implementation Methodology**: MCP-First approach prioritizing intelligent reasoning capabilities as the foundation for all other enhancements, with systematic task breakdown for 85% success probability.
 
 ---
 
-## 🎯 TACTICAL IMPLEMENTATION APPROACH
+## 🎯 TACTICAL IMPLEMENTATION APPROACH - MCP-FIRST PRIORITIZATION
 
-### Proven 46-Task Breakdown Methodology
+### **NEW PRIORITY STRUCTURE** 
 
-Based on strategic analysis, this project employs a systematic task breakdown that transforms overwhelming strategic phases into manageable, unit-testable implementations:
+Based on strategic analysis and user requirements for enhanced MCP tools and chain of thought management, the implementation priority has been restructured:
 
-#### **Success Metrics Transformation**
-- **From**: 4 massive milestones over 6 months with 40% success probability
-- **To**: 46 granular tasks (2-5 hours each) with 85% success probability
-- **Benefit**: 95% better progress tracking, 85% better risk management, 60% faster time-to-value
-
-#### **Task Categories & Dependencies**
+#### **Task Categories & Dependencies (Updated)**
 
 ```mermaid
 graph TD
-    A[Category A: Audio Transcription<br/>Week 1-2] --> A_READY[✅ Independent - Start Immediately]
-    B[Category B: Phase 1 Reasoning<br/>Week 3-5] --> B_FOUNDATION[🏗️ Foundation for All Others]
-    C[Category C: Phase 2 Memory<br/>Week 6-11] --> C_DEPENDS[⚠️ Requires Category B]
-    D[Category D: Phase 3 Automation<br/>Week 12-19] --> D_DEPENDS[⚠️ Requires B + C]
-    E[Category E: Phase 4 Analytics<br/>Week 20-25] --> E_DEPENDS[⚠️ Requires B + C + D]
-    F[Category F: Ongoing Maintenance<br/>Throughout] --> F_PARALLEL[🔄 Runs in Parallel]
+    B[Category B: Enhanced MCP Integration<br/>Week 1-3] --> B_PRIORITY[🧠 IMMEDIATE PRIORITY - Foundational]
+    C[Category C: Memory & Learning<br/>Week 4-8] --> C_DEPENDS[⚠️ Requires Category B]
+    D[Category D: Advanced Orchestration<br/>Week 9-14] --> D_DEPENDS[⚠️ Requires B + C]
+    A[Category A: Audio Transcription<br/>Week 15-16] --> A_DEFERRED[⏸️ Deferred - Independent Feature]
+    E[Category E: Analytics & Optimization<br/>Week 17-22] --> E_DEPENDS[⚠️ Requires B + C + D]
+    F[Category F: Maintenance & Infrastructure<br/>Throughout] --> F_PARALLEL[🔄 Runs in Parallel]
 ```
 
 ### **Current Implementation Status**
 
-**🚀 READY TO START**: **Task A1** - Audio Transcription Dependencies & Environment Setup
-- **Request ID**: req-39
-- **Total Tasks**: 46 tasks organized across 6 categories
-- **Next Action**: Begin with Category A for immediate wins while building foundation
+**🧠 IMMEDIATE PRIORITY**: **Category B - Enhanced MCP Integration**
+- **Request ID**: req-43
+- **Current Task**: task-380 (PROJECT_PLAN.md Update) → task-381 (mcp-reasoner Integration)
+- **GitHub Issues**: #5 (Flow Intelligence), #6 (Dynamic Branching)
+- **Strategic Benefit**: Foundation for ALL intelligent features
 
 ---
 
@@ -58,9 +54,17 @@ FLUJO currently provides excellent foundation capabilities including visual flow
 
 **MCP Integration**
 - Robust server management with STDIO transport
+- 15+ MCP servers already integrated in `/mcp-servers/`
 - Granular tool selection per workflow node
 - Environment variable binding with encryption
 - Support for GitHub, local, Docker, and SSE servers
+
+**Available MCP Servers**
+- `mcp-reasoner` - Advanced reasoning with beam search, MCTS strategies
+- `sequential-thinking` - Step-by-step problem solving with branching
+- `memory` - Knowledge graph for persistent learning
+- `taskmanager` - Task decomposition and workflow management
+- `code-reasoning` - Specialized reasoning for development tasks
 
 **Conversation Management**
 - Individual JSON file storage per conversation
@@ -79,53 +83,93 @@ FLUJO currently provides excellent foundation capabilities including visual flow
 
 ## Strategic Enhancement Phases
 
-### Phase 1: Advanced MCP Integration (Months 1-2)
+### Phase 1: Enhanced MCP Integration (Weeks 1-3) 🧠 **CURRENT PRIORITY**
 **Tactical Implementation**: Category B Tasks (B1-B8)
 
-#### 1.1 Intelligent MCP Router
-**Objective**: Implement dynamic MCP server selection based on context and performance
+#### 1.1 Flow Intelligence Enhancement (Issue #5)
+**Objective**: Integrate mcp-reasoner into FLUJO's core execution engine
 
 **Technical Implementation**:
 ```typescript
-interface IntelligentMCPRouter {
-  analyzeContext(messages: FlujoChatMessage[]): MCPContext;
-  selectOptimalServers(context: MCPContext, availableServers: MCPServer[]): MCPServer[];
-  balanceLoad(servers: MCPServer[]): LoadBalancingStrategy;
-  handleFailover(failedServer: MCPServer, alternatives: MCPServer[]): MCPServer;
+// Location: src/backend/execution/flow/FlowExecutor.ts
+export class EnhancedFlowExecutor {
+  static async analyzeFlowOptimization(
+    sharedState: SharedState
+  ): Promise<FlowOptimizationResult> {
+    const reasoningResult = await MCPHandler.executeMCP({
+      mcpServer: 'mcp-reasoner',
+      enabledTools: ['mcp-reasoner'],
+      context: {
+        messages: sharedState.messages,
+        currentFlow: sharedState.flowId,
+        executionHistory: sharedState.debugSteps,
+        performanceMetrics: sharedState.metrics
+      },
+      task: 'analyze_flow_performance_and_suggest_optimizations'
+    });
+    
+    return {
+      suggestions: reasoningResult.value.suggestions,
+      alternativePaths: reasoningResult.value.alternatives,
+      performanceMetrics: reasoningResult.value.metrics,
+      confidence: reasoningResult.value.confidence
+    };
+  }
 }
 ```
 
-**Key Features**:
-- Context analysis for optimal server selection
-- Load balancing across multiple MCP instances
-- Automatic failover mechanisms
-- Performance-based routing decisions
-
 **Implementation Tasks**:
-- **B1**: MCP-Reasoner Integration Setup (2-3 hours)
+- **B1**: MCP-Reasoner Integration Setup (2-3 hours) **NEXT TASK**
 - **B2**: Flow Analysis Service Implementation (4-5 hours)
-- **B6**: Context-Aware Tool Selection (3-4 hours)
+- **B3**: Performance Optimization Suggestions (3-4 hours)
 - **B8**: Performance Tracking Infrastructure (3-4 hours)
 
-#### 1.2 Enhanced MCP Node Types
-**Objective**: Expand node capabilities with intelligent processing
+#### 1.2 Dynamic Branching Logic (Issue #6)
+**Objective**: Replace static branching with intelligent decision-making
 
-**New Node Types**:
-- `mcp-intelligent`: Dynamic server and tool selection
-- `mcp-chain`: Sequential tool execution with dependency management
-- `mcp-conditional`: Context-based execution branching
-- `mcp-parallel`: Concurrent tool execution with result aggregation
+**Technical Implementation**:
+```typescript
+// New file: src/backend/execution/flow/handlers/BranchingHandler.ts
+export class BranchingHandler {
+  static async executeIntelligentBranching(
+    input: MCPExecutionInput,
+    context: ConversationContext,
+    availableNodes: MCPNodeConfig[]
+  ): Promise<BranchingDecision> {
+    
+    const thinkingResult = await MCPHandler.executeMCP({
+      mcpServer: 'sequential-thinking',
+      enabledTools: ['sequentialthinking'],
+      context: {
+        conversation: context.messages,
+        availableOptions: availableNodes,
+        currentState: context.sharedState,
+        executionHistory: context.executionHistory
+      },
+      task: 'determine_optimal_next_action_with_reasoning'
+    });
+    
+    return {
+      selectedNodes: thinkingResult.value.recommendedNodes,
+      reasoning: thinkingResult.value.reasoning,
+      confidence: thinkingResult.value.confidence,
+      alternativePaths: thinkingResult.value.alternatives
+    };
+  }
+}
+```
 
 **Implementation Tasks**:
 - **B4**: Sequential-Thinking Integration (4-5 hours)
 - **B5**: Dynamic Branching Implementation (4-5 hours)
+- **B6**: Context-Aware Tool Selection (3-4 hours)
 - **B7**: Branching UI & Debug Tools (3-4 hours)
 
-### Phase 2: Advanced Flow Orchestration (Months 2-3)
+### Phase 2: Memory & Learning (Weeks 4-8)
 **Tactical Implementation**: Category C Tasks (C1-C8)
 
-#### 2.1 Adaptive Flow Execution
-**Objective**: Implement intelligent flow adaptation based on execution results
+#### 2.1 Memory Service Integration (Issue #7)
+**Objective**: Enable cross-conversation learning and pattern storage
 
 **Implementation Tasks**:
 - **C1**: Memory MCP Server Integration (2-3 hours)
@@ -142,10 +186,10 @@ interface IntelligentMCPRouter {
 - **C7**: Knowledge Graph UI Components (4-5 hours)
 - **C8**: Flow Builder Memory Integration (3-4 hours)
 
-### Phase 3: Enterprise Platform Features (Months 3-4)
+### Phase 3: Advanced Orchestration (Weeks 9-14)
 **Tactical Implementation**: Category D Tasks (D1-D8)
 
-#### 3.1 Natural Language to Flow Generation
+#### 3.1 Natural Language to Flow Generation (Issue #8)
 **Objective**: AI-assisted workflow creation and optimization
 
 **Implementation Tasks**:
@@ -158,10 +202,25 @@ interface IntelligentMCPRouter {
 - **D7**: Contextual Generation Enhancement (4-5 hours)
 - **D8**: Advanced Error Recovery (3-4 hours)
 
-### Phase 4: AI-Powered Optimization (Months 4-5)
+### Phase 4: Audio Transcription (Weeks 15-16) - **DEFERRED**
+**Tactical Implementation**: Category A Tasks (A1-A8)
+
+**STRATEGIC NOTE**: Audio transcription has been moved to later phase as it's an independent feature that doesn't require the enhanced reasoning foundation. MCP intelligence provides more foundational value.
+
+**Implementation Tasks**:
+- **A1**: Dependencies & Environment Setup (2-3 hours)
+- **A2**: Type Definitions & Storage (2-3 hours)
+- **A3**: Whisper Model Service (3-4 hours)
+- **A4**: Transcription Service Wrapper (3-4 hours)
+- **A5**: Settings UI Component (3-4 hours)
+- **A6**: Settings Integration (2-3 hours)
+- **A7**: ChatInput Enhancement (4-5 hours)
+- **A8**: Testing & Optimization (3-4 hours)
+
+### Phase 5: Analytics & Self-Optimization (Weeks 17-22)
 **Tactical Implementation**: Category E Tasks (E1-E8)
 
-#### 4.1 Analytics & Self-Optimization
+#### 5.1 Analytics & Self-Optimization
 **Objective**: Comprehensive platform monitoring and business intelligence
 
 **Implementation Tasks**:
@@ -178,31 +237,26 @@ interface IntelligentMCPRouter {
 
 ## 🚀 IMMEDIATE IMPLEMENTATION PATH
 
-### Category A: Audio Transcription (Weeks 1-2)
-**Status**: ✅ Ready to start immediately - Independent of other phases
+### **CURRENT PRIORITY**: Category B - Enhanced MCP Integration
 
-**CURRENT TASK**: **A1 - Audio Transcription Dependencies & Environment Setup**
-- Set up Whisper model integration
-- Install required npm packages (openai-whisper, audio recording libraries)
-- Configure development environment for audio processing
-- Create initial project structure for audio features
+**🧠 FOUNDATIONAL TASK**: **B1 - MCP-Reasoner Integration Setup**
+- Integrate mcp-reasoner into FlowExecutor.ts
+- Add flow analysis capabilities to existing architecture
+- Create foundation for intelligent decision-making
 - **Estimated**: 2-3 hours
+- **GitHub Issue**: #5 (Flow Intelligence Enhancement)
 
-**Complete Category A Tasks**:
-1. **A1**: Dependencies & Environment Setup (2-3 hours)
-2. **A2**: Type Definitions & Storage (2-3 hours)
-3. **A3**: Whisper Model Service (3-4 hours)
-4. **A4**: Transcription Service Wrapper (3-4 hours)
-5. **A5**: Settings UI Component (3-4 hours)
-6. **A6**: Settings Integration (2-3 hours)
-7. **A7**: ChatInput Enhancement (4-5 hours)
-8. **A8**: Testing & Optimization (3-4 hours)
+**STRATEGIC BENEFITS**:
+- **Intelligence Foundation**: Enables all future smart features
+- **Immediate Impact**: Flow optimization suggestions for users
+- **Technical Foundation**: Required for dynamic branching and memory integration
+- **Chain of Thought**: Enhanced reasoning capabilities for complex workflows
 
-**Benefits**:
-- Immediate user value with voice input capabilities
-- Independent development path with no blocking dependencies
-- Foundation for Phase 3 voice integration features
-- Early wins to build momentum and validate methodology
+### **NEXT TASKS IN SEQUENCE**:
+1. **B2**: Flow Analysis Service Implementation (4-5 hours)
+2. **B4**: Sequential-Thinking Integration (4-5 hours) 
+3. **B5**: Dynamic Branching Implementation (4-5 hours)
+4. **B6**: Context-Aware Tool Selection (3-4 hours)
 
 ### Ongoing: Category F - Maintenance & Infrastructure
 **Parallel execution throughout project timeline**:
@@ -219,7 +273,9 @@ interface IntelligentMCPRouter {
 
 ### Development Approach
 
-#### 1. Task-Based Execution
+#### 1. MCP-First Task Execution
+- **Reasoning Foundation**: Start with mcp-reasoner integration for intelligence
+- **Sequential Development**: Each task builds on previous MCP capabilities
 - **2-5 hour task sizing** for manageable work sessions
 - **Clear acceptance criteria** for unit testing and verification
 - **Dependency mapping** to avoid blocking and enable parallel work
@@ -232,62 +288,76 @@ interface IntelligentMCPRouter {
 - User acceptance testing with real scenarios
 
 #### 3. Risk Management
-- **46 failure detection points** vs 4 all-or-nothing milestones
-- **Early validation** with Category A audio features
+- **Enhanced failure detection** through intelligent reasoning
+- **Early validation** with Category B reasoning features  
 - **Rollback capability** with version control and feature flags
 - **Adaptive timeline** based on task completion velocity
 
 ### Technical Architecture Enhancements
 
-#### Backend Services
+#### Backend Services (Updated Priority)
 ```
 src/backend/
 ├── services/
-│   ├── audio/                     # Category A - Audio Transcription
-│   │   ├── whisper-service.ts     # A3: Core Whisper integration
-│   │   ├── transcription-wrapper.ts # A4: Service wrapper
-│   │   └── audio-storage.ts       # A2: Storage utilities
-│   ├── mcp/
-│   │   ├── router.ts              # B1: Intelligent MCP routing
+│   ├── mcp/                       # Category B - IMMEDIATE PRIORITY
+│   │   ├── reasoner-integration.ts # B1: mcp-reasoner integration  
+│   │   ├── router.ts              # B2: Intelligent MCP routing
 │   │   ├── monitor.ts             # B8: Performance monitoring
-│   │   ├── reasoner-integration.ts # B2: Flow analysis
 │   │   └── branching-handler.ts   # B4: Dynamic branching
-│   ├── memory/
+│   ├── memory/                    # Category C - Phase 2
 │   │   ├── flow-memory-service.ts # C2: Pattern storage
 │   │   ├── pattern-matcher.ts     # C3: Pattern recognition
 │   │   └── context-manager.ts     # C4: Cross-conversation context
-│   ├── generation/
+│   ├── generation/                # Category D - Phase 3
 │   │   ├── flow-generation.ts     # D1: Natural language to flow
 │   │   ├── task-analyzer.ts       # D2: Task decomposition
 │   │   └── template-engine.ts     # D6: Template system
-│   └── analytics/
+│   ├── audio/                     # Category A - DEFERRED
+│   │   ├── whisper-service.ts     # A3: Core Whisper integration
+│   │   ├── transcription-wrapper.ts # A4: Service wrapper
+│   │   └── audio-storage.ts       # A2: Storage utilities
+│   └── analytics/                 # Category E - Phase 5
 │       ├── metrics-collector.ts   # E1: Data collection
 │       ├── dashboard-service.ts   # E2: Analytics dashboard
 │       └── optimization-engine.ts # E3: Self-optimization
 ```
 
-#### Frontend Components
+#### Frontend Components (Updated Priority)
 ```
 src/frontend/
 ├── components/
-│   ├── Audio/                     # Category A Components
+│   ├── Flow/                      # Category B - IMMEDIATE PRIORITY
+│   │   ├── IntelligentNodes/      # B3: Intelligence UI
+│   │   ├── BranchingVisualization/ # B7: Debug tools
+│   │   ├── OptimizationPanel/     # B2: Flow analysis UI
+│   │   └── ReasoningDisplay/      # B1: Reasoning insights
+│   ├── Memory/                    # Category C - Phase 2
+│   │   ├── MemoryBrowser/         # C7: Knowledge graph UI
+│   │   ├── PatternViewer/         # C3: Pattern visualization
+│   │   └── ContextDisplay/        # C4: Context management
+│   ├── Generation/                # Category D - Phase 3
+│   │   ├── GenerationInterface/   # D4: Natural language input
+│   │   ├── TemplateLibrary/       # D6: Template system
+│   │   └── FlowCreator/           # D1: Auto-generation UI
+│   ├── Audio/                     # Category A - DEFERRED
 │   │   ├── AudioSettings/         # A5: Settings UI
 │   │   ├── VoiceRecorder/         # A7: Recording interface
 │   │   └── TranscriptionDisplay/  # A7: Transcription UI
-│   ├── Flow/
-│   │   ├── IntelligentNodes/      # B3: Intelligence UI
-│   │   ├── BranchingVisualization/ # B7: Debug tools
-│   │   ├── MemoryBrowser/         # C7: Knowledge graph UI
-│   │   └── GenerationInterface/   # D4: Natural language input
-│   ├── Analytics/
+│   ├── Analytics/                 # Category E - Phase 5
 │   │   ├── PerformanceDashboard/  # E2: Analytics visualization
-│   │   └── OptimizationPanel/     # E3: Self-optimization UI
+│   │   └── OptimizationReports/   # E7: Automated reports
 │   └── Testing/                   # F1, F2: Test components
 ```
 
 ## Success Metrics & KPIs
 
-### Performance Metrics
+### MCP Intelligence Metrics (Priority)
+- **Reasoning Accuracy**: 85%+ correct optimization suggestions
+- **Decision Quality**: 90%+ user satisfaction with intelligent branching
+- **Performance Impact**: <100ms latency for reasoning operations
+- **Chain of Thought**: Measurable improvement in complex workflow success
+
+### Traditional Performance Metrics
 - **Workflow Execution Speed**: 50% improvement in average execution time
 - **MCP Tool Success Rate**: 95%+ successful tool executions
 - **System Reliability**: 99.9% uptime for critical workflows
@@ -296,72 +366,49 @@ src/frontend/
 ### User Experience Metrics
 - **Workflow Creation Time**: 60% reduction in time to build complex workflows
 - **Error Resolution**: 80% reduction in user-reported issues
-- **Feature Adoption**: 70% adoption rate for new advanced features
+- **Feature Adoption**: 70% adoption rate for new intelligent features
 - **User Satisfaction**: 4.5/5 average user rating
 
-### Project Success Metrics
-- **Task Completion Velocity**: Target 2-3 tasks per week
-- **Quality Gates**: <5% task rework rate
-- **Progress Visibility**: 46 granular checkpoints vs 4 massive milestones
-- **Risk Reduction**: 85% improvement in failure detection and prevention
+## Timeline & Milestones (Updated)
 
-## Risk Management
-
-### Technical Risks
-- **Complexity Management**: Modular architecture and comprehensive testing
-- **Performance Degradation**: Continuous monitoring and optimization
-- **Integration Challenges**: Thorough compatibility testing with MCP servers
-- **Scalability Limits**: Horizontal scaling architecture planning
-
-### Project Risks
-- **Dependency Bottlenecks**: Clear task dependencies to avoid blocking
-- **Scope Creep**: Well-defined 2-5 hour task boundaries and acceptance criteria
-- **Resource Allocation**: Predictable planning with consistent task sizing
-- **Quality Control**: Testing tasks integrated throughout development
-
-### Mitigation Strategies
-- **Proof-of-Concept First**: Validate technical assumptions with Category A
-- **Gradual Rollout**: Feature flags and canary deployments
-- **Community Feedback**: Use Discord for validation and course correction
-- **Adaptive Timeline**: Adjust based on Category A completion velocity
-
-## Timeline & Milestones
-
-### Immediate (Weeks 1-2): Category A - Audio Transcription
-- ✅ **Current**: Task A1 ready for implementation
-- 🎯 **Goal**: Complete all 8 audio transcription tasks
-- 🎁 **Deliverable**: Voice input capabilities for FLUJO chat interface
-
-### Short-term (Weeks 3-5): Category B - Phase 1 Reasoning
-- 🎯 **Goal**: Intelligent MCP orchestration and dynamic branching
+### **IMMEDIATE (Weeks 1-3): Category B - Enhanced MCP Integration** 🧠
+- ✅ **Current**: task-380 (PROJECT_PLAN.md Update) → task-381 (mcp-reasoner Integration)
+- 🎯 **Goal**: Intelligent flow analysis and dynamic branching capabilities
 - 🎁 **Deliverable**: Context-aware flow execution with optimization suggestions
+- 📋 **GitHub Issues**: #5 (Flow Intelligence), #6 (Dynamic Branching)
 
-### Medium-term (Weeks 6-11): Category C - Phase 2 Memory
+### Short-term (Weeks 4-8): Category C - Memory & Learning
 - 🎯 **Goal**: Knowledge graph memory system and pattern recognition
 - 🎁 **Deliverable**: Cross-conversation learning and intelligent suggestions
+- 📋 **GitHub Issues**: #7 (Memory Service Integration)
 
-### Long-term (Weeks 12-19): Category D - Phase 3 Automation
+### Medium-term (Weeks 9-14): Category D - Advanced Orchestration  
 - 🎯 **Goal**: Natural language to flow generation
 - 🎁 **Deliverable**: AI-powered workflow creation from descriptions
+- 📋 **GitHub Issues**: #8 (Natural Language to Flow Generation)
 
-### Final (Weeks 20-25): Category E - Phase 4 Analytics
+### Deferred (Weeks 15-16): Category A - Audio Transcription
+- 🎯 **Goal**: Voice input capabilities (independent feature)
+- 🎁 **Deliverable**: Voice input capabilities for FLUJO chat interface
+
+### Final (Weeks 17-22): Category E - Analytics & Self-Optimization
 - 🎯 **Goal**: Self-optimizing platform with comprehensive analytics
 - 🎁 **Deliverable**: Intelligent AI orchestration platform with autonomous optimization
 
 ## Resource Requirements
 
 ### Development Team
-- **2 Senior Full-Stack Developers**: Core platform development
+- **2 Senior Full-Stack Developers**: Core platform development (MCP integration focus)
 - **1 DevOps Engineer**: Infrastructure and deployment (Category F)
-- **1 ML Engineer**: AI optimization features (Categories C, D, E)
-- **1 UX Designer**: Interface design and user experience
+- **1 ML Engineer**: AI optimization features (Categories B, C, D, E)
+- **1 UX Designer**: Interface design and user experience (reasoning UI focus)
 - **1 QA Engineer**: Testing and quality assurance (Category F)
 
 ### Infrastructure
 - **Development Environment**: Containerized development stack
 - **Testing Infrastructure**: Automated testing pipeline (Category F)
 - **Monitoring Tools**: Performance and security monitoring (Category F)
-- **Task Management**: Systematic progress tracking (req-39)
+- **Task Management**: Systematic progress tracking (req-43)
 
 ---
 
@@ -369,50 +416,51 @@ src/frontend/
 
 ### For Development Team
 
-**IMMEDIATE ACTION**: Start with Task A1
+**IMMEDIATE ACTION**: Start with Category B (MCP Integration)
 1. **Clone Repository**: `git clone https://github.com/joelfuller2016/FLUJO.git`
-2. **Check Task Status**: Use task management system (req-39)
-3. **Begin A1**: Audio Transcription Dependencies & Environment Setup
-4. **Estimated Time**: 2-3 hours for immediate progress
+2. **Check Task Status**: Use task management system (req-43)
+3. **Begin B1**: MCP-Reasoner Integration Setup (Issue #5)
+4. **Estimated Time**: 2-3 hours for foundational reasoning capabilities
 
 ### For Project Managers
 
 **TRACKING**: Use comprehensive task management
-1. **Monitor Progress**: 46 granular checkpoints vs 4 massive milestones
-2. **Risk Management**: Early detection with task-level validation
+1. **Monitor Progress**: Enhanced reasoning capabilities as foundation
+2. **Risk Management**: Early detection with reasoning-based validation
 3. **Resource Planning**: Predictable 2-5 hour task sizing
-4. **Team Coordination**: Clear dependencies and parallel work opportunities
+4. **Team Coordination**: Clear dependencies starting with MCP intelligence
 
 ### For Stakeholders
 
-**VISIBILITY**: Clear progress indicators
+**VISIBILITY**: Clear progress indicators with intelligent foundations
 1. **Strategic Vision**: Maintained with intelligent AI orchestration platform
-2. **Tactical Execution**: 85% success probability with proven methodology
-3. **Immediate Value**: Audio transcription features deliver early wins
+2. **Tactical Execution**: 85% success probability with MCP-first methodology  
+3. **Immediate Value**: Intelligent flow analysis and optimization suggestions
 4. **Long-term Goals**: Autonomous decision-making and optimization capabilities
 
 ## Conclusion
 
-This enhanced project plan transforms FLUJO from "impressive vision with execution uncertainty" to "systematic delivery of intelligent AI orchestration platform." The 46-task breakdown approach provides:
+This enhanced project plan transforms FLUJO from \"impressive vision with execution uncertainty\" to \"systematic delivery of intelligent AI orchestration platform.\" The **MCP-First approach** provides:
 
-- **85% improvement** in project success probability
+- **85% improvement** in project success probability through reasoning foundation
 - **95% better** progress tracking and visibility
-- **Immediate implementation** with Category A audio features
+- **Immediate intelligence** with Category B reasoning features
 - **Strategic vision preservation** with tactical execution clarity
 
-The systematic approach eliminates execution paralysis while maintaining ambitious goals, providing a clear path from the current visual workflow builder to an intelligent AI orchestration platform that learns, adapts, and optimizes itself.
+The MCP-first approach prioritizes the most foundational capabilities - intelligent reasoning and decision-making - which will enhance ALL other features. This eliminates execution paralysis while building true intelligence into the platform from the ground up.
 
 **Next Steps**:
-1. ✅ Begin Task A1: Audio Transcription Dependencies & Environment Setup
-2. 📊 Track progress through task management system (req-39)
-3. 🔄 Complete Category A for immediate user value
-4. 🚀 Progress through Categories B-F following dependency chain
+1. 🧠 Begin task-381: MCP-Reasoner Integration (Issue #5)
+2. 📊 Track progress through task management system (req-43)
+3. 🔄 Complete Category B for intelligent foundations
+4. 🚀 Progress through Categories C-E with enhanced reasoning capabilities
 
 For questions or modifications to this plan, please open an issue or contact the development team.
 
 ---
 
 *Last Updated: June 2025*  
-*Version: 2.0 - Optimized Implementation*  
-*Status: Active Development - Task A1 Ready*  
-*Task Management: Request ID req-39*
+*Version: 3.0 - MCP-First Prioritization*  
+*Status: Active Development - Category B Priority*  
+*Task Management: Request ID req-43*  
+*Current Task: task-381 (mcp-reasoner Integration)*
